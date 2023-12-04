@@ -1,8 +1,8 @@
 package com.em.testtask.mapper;
 
 import com.em.testtask.domain.Task;
-import com.em.testtask.dto.InputTaskDto;
-import com.em.testtask.dto.OutputTaskDto;
+import com.em.testtask.dto.domain.InputTaskDto;
+import com.em.testtask.dto.domain.OutputTaskDto;
 import com.em.testtask.mapper.config.MapConfig;
 import org.mapstruct.Mapper;
 

@@ -1,4 +1,4 @@
-package com.em.testtask.dto;
+package com.em.testtask.dto.domain;
 
 import lombok.Data;
 
