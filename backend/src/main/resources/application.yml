@@ -11,8 +11,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/auth/realms/DFA
-          jwk-set-uri: http://localhost:8080/auth/realms/DFA/protocol/openid-connect/certs
+          issuer-uri: http://localhost:8080/auth/realms/Tasks
+          jwk-set-uri: http://localhost:8080/auth/realms/Tasks/protocol/openid-connect/certs
   datasource:
     url: jdbc:postgresql://localhost:5433/tasks
     username: postgres
