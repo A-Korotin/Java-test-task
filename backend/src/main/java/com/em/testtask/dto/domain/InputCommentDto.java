@@ -1,4 +1,4 @@
-package com.em.testtask.dto;
+package com.em.testtask.dto.domain;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

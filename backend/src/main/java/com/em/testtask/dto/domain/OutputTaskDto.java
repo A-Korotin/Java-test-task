@@ -1,26 +1,20 @@
-package com.em.testtask.dto;
+package com.em.testtask.dto.domain;
 
 import com.em.testtask.domain.TaskPriority;
 import com.em.testtask.domain.TaskStatus;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.util.List;
+import java.util.UUID;
+
 @Data
-public class InputTaskDto {
-    @NotNull
-    @NotEmpty
+public class OutputTaskDto {
+    public UUID id;
     public String heading;
-
     public String description;
-
-    @NotNull
     public TaskStatus status;
-
-    @NotNull
     public TaskPriority priority;
-
-    @NotNull
-    @NotEmpty
+    public String authorId;
     public String assigneeId;
+    public List<OutputCommentDto> comments;
 }
