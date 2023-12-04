@@ -54,8 +54,8 @@ services:
       context: ../backend/
       target: prod
     environment:
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/auth/realms/DFA
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:8080/auth/realms/DFA/protocol/openid-connect/certs
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/auth/realms/Tasks
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:8080/auth/realms/Tasks/protocol/openid-connect/certs
       - SPRING_DATASOURCE_URL= jdbc:postgresql://app-db:5432/tasks
     ports:
       - "8081:8081"
