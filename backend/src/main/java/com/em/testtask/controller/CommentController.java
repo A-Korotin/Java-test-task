@@ -10,6 +10,8 @@ import com.em.testtask.service.CommentService;
 import com.em.testtask.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -23,6 +25,7 @@ public class CommentController {
     private final CommentMapper mapper;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public OutputCommentDto createComment(@PathVariable UUID taskId, @Valid @RequestBody InputCommentDto dto) {
         Comment comment = mapper.fromDto(dto);
         Task parentTask = taskService.findById(taskId).orElseThrow(() ->
@@ -35,6 +38,7 @@ public class CommentController {
     }
 
     @PutMapping("/{commentId}")
+    @PreAuthorize("commentSecurityService.userHasRightsToModify(commentId, principal)")
     public OutputCommentDto editComment(@PathVariable UUID taskId,
                                         @PathVariable UUID commentId,
                                         @Valid @RequestBody InputCommentDto dto) {
@@ -44,5 +48,19 @@ public class CommentController {
         comment = commentService.updateById(parentTask, commentId, comment);
 
         return mapper.toDto(comment);
+    }
+
+    @DeleteMapping("{/{commentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("commentSecurityService.userHasRightsToModify(commentId, principal)")
+    public void deleteById(@PathVariable UUID taskId, @PathVariable UUID commentId) {
+        Task parentTask = taskService.findById(taskId).orElseThrow(() ->
+                new NotFoundException("Task with id '%s' could not be found", taskId));
+
+        if (parentTask.getComments().stream().noneMatch((c) -> c.getId().equals(commentId))) {
+            throw new NotFoundException("Task with id '%s' does not contain comment with id '%s'", taskId, commentId);
+        }
+
+        commentService.deleteById(commentId);
     }
 }
