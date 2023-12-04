@@ -1,6 +1,7 @@
 package com.em.testtask.service.impl;
 
 import com.em.testtask.domain.Task;
+import com.em.testtask.exception.NotFoundException;
 import com.em.testtask.repository.TaskRepository;
 import com.em.testtask.service.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,10 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void deleteById(UUID id) {
+        if (!existsById(id)) {
+            throw new NotFoundException("Task with id '%s' does not exist", id);
+        }
+
         repository.deleteById(id);
     }
 
