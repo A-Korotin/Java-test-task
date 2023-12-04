@@ -1,6 +1,8 @@
 package com.em.testtask.service.impl;
 
 import com.em.testtask.domain.Task;
+import com.em.testtask.domain.TaskStatus;
+import com.em.testtask.exception.BadRequestException;
 import com.em.testtask.exception.NotFoundException;
 import com.em.testtask.repository.TaskRepository;
 import com.em.testtask.service.TaskService;
@@ -61,5 +63,19 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Page<Task> findAllByAssignee(String assigneeId) {
         return null;
+    }
+
+    @Override
+    public Task changeStatus(UUID taskId, TaskStatus status) {
+        Task task = findById(taskId).orElseThrow(() ->
+                new NotFoundException("Task with id '%s' could not be found", taskId));
+
+        if (task.getStatus().equals(status)) {
+            throw new BadRequestException("Task status is already '%s'", status);
+        }
+
+        task.setStatus(status);
+
+        return repository.save(task);
     }
 }
