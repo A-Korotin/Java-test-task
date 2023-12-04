@@ -1,0 +1,27 @@
+server:
+  port: 8081
+
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/auth/realms/DFA
+          jwk-set-uri: http://localhost:8080/auth/realms/DFA/protocol/openid-connect/certs
+  datasource:
+    url: jdbc:postgresql://localhost:5433/tasks
+    username: postgres
+    password: postgres
+    driverClassName: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db-changelog.xml
