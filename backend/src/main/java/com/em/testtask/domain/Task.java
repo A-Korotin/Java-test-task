@@ -15,6 +15,7 @@ import java.util.UUID;
 @Data
 public class Task {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     private String heading;
