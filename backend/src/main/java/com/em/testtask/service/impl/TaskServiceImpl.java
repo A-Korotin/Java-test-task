@@ -7,6 +7,7 @@ import com.em.testtask.exception.NotFoundException;
 import com.em.testtask.repository.TaskRepository;
 import com.em.testtask.service.TaskService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -56,16 +57,6 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Page<Task> findAllByAuthor(String authorId) {
-        return null;
-    }
-
-    @Override
-    public Page<Task> findAllByAssignee(String assigneeId) {
-        return null;
-    }
-
-    @Override
     public Task changeStatus(UUID taskId, TaskStatus status) {
         Task task = findById(taskId).orElseThrow(() ->
                 new NotFoundException("Task with id '%s' could not be found", taskId));
@@ -77,5 +68,10 @@ public class TaskServiceImpl implements TaskService {
         task.setStatus(status);
 
         return repository.save(task);
+    }
+
+    @Override
+    public Page<Task> findMatching(Pageable pageable, Example<Task> example) {
+        return repository.findAll(example, pageable);
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.UUID;
 
 @RestController
@@ -26,19 +27,22 @@ public class CommentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OutputCommentDto createComment(@PathVariable UUID taskId, @Valid @RequestBody InputCommentDto dto) {
+    public OutputCommentDto createComment(@PathVariable UUID taskId,
+                                          @Valid @RequestBody InputCommentDto dto,
+                                          Principal currentUser) {
         Comment comment = mapper.fromDto(dto);
         Task parentTask = taskService.findById(taskId).orElseThrow(() ->
                 new NotFoundException("Task with id '%s' could not be found", taskId));
 
         comment.setTask(parentTask);
+        comment.setAuthorId(currentUser.getName());
         comment = commentService.save(comment);
 
         return mapper.toDto(comment);
     }
 
     @PutMapping("/{commentId}")
-    @PreAuthorize("commentSecurityService.userHasRightsToModify(commentId, principal)")
+    @PreAuthorize("@commentSecurityService.userHasRightsToModify(#commentId, principal)")
     public OutputCommentDto editComment(@PathVariable UUID taskId,
                                         @PathVariable UUID commentId,
                                         @Valid @RequestBody InputCommentDto dto) {
@@ -50,9 +54,9 @@ public class CommentController {
         return mapper.toDto(comment);
     }
 
-    @DeleteMapping("{/{commentId}")
+    @DeleteMapping("/{commentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("commentSecurityService.userHasRightsToModify(commentId, principal)")
+    @PreAuthorize("@commentSecurityService.userHasRightsToModify(#commentId, principal)")
     public void deleteById(@PathVariable UUID taskId, @PathVariable UUID commentId) {
         Task parentTask = taskService.findById(taskId).orElseThrow(() ->
                 new NotFoundException("Task with id '%s' could not be found", taskId));

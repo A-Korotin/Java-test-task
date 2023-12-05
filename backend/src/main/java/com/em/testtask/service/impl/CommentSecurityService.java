@@ -5,6 +5,7 @@ import com.em.testtask.exception.NotFoundException;
 import com.em.testtask.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -14,10 +15,11 @@ import java.util.UUID;
 public class CommentSecurityService {
     private final CommentService service;
 
-    public boolean userHasRightsToModify(UUID commentId, UserDetails currentUser) {
+    public boolean userHasRightsToModify(UUID commentId, Jwt currentUser) {
         Comment comment = service.findById(commentId).orElseThrow(() ->
                 new NotFoundException("Comment with id '%s' could not be found", commentId));
+        String currentUserId = currentUser.getClaimAsString("sub");
 
-        return comment.getAuthorId().equals(currentUser.getUsername());
+        return comment.getAuthorId().equals(currentUserId);
     }
 }
