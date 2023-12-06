@@ -50,7 +50,7 @@ services:
       - app-db
     pull_policy: build
     build:
-      dockerfile: backend/Dockerfile
+      dockerfile: Dockerfile
       context: ../backend/
       target: prod
     environment:
