@@ -28,6 +28,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static com.em.testtask.util.MockJwtAuthTools.testJwtAuth;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -46,9 +47,6 @@ public class TaskMvcTest {
 
     private UUID validId = UUID.randomUUID();
 
-    private SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor testJwtAuth(String sub) {
-        return SecurityMockMvcRequestPostProcessors.jwt().jwt((b) -> b.claim("sub", sub));
-    }
 
     @Test
     public void positiveRetrieveTaskTest() throws Exception {
