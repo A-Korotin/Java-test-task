@@ -38,6 +38,7 @@ email и паролю.
 Приложение использует OAuth2 авторизацию при помощи сервера авторизации Keycloak.
 
 В репозитории настроено автоматическое исполнение тестов на событие **push**, **pull request** в ветки **main** и **dev**
+
 ## Запуск dev среды
 Для запуска нужно выполнить команду:
 ```shell
@@ -45,23 +46,29 @@ $ docker compose -f .\devops\docker-compose.yml up -d
 ```
 После исполнения поднимется БД приложения, сервер авторизации Keycloak, БД Keycloak 
 и само приложение (будет произведена компиляция из исходного кода).
+
 ## Документация
 После запуска Swagger-документация будет доступна по URL
 `http://localhost:8081/api/v1/swagger-ui/index.html`
 
 Сервер авторизации Keycloak будет доступен по URL
 `http://localhost:8080/`
-
+## Параметры сервера авторизации
 Сервер авторизации допускает регистрацию, использует Email в качестве логина пользователей.
-
 Для получения токенов использовался Postman и были настроены следующие redirect uris:
-
 ![img.png](res/img.png)
+Client id: `tasks`
+
+Client secret: `jmtcYS7XOgMDllK8SwLh2VFBxJtWgiaC`
 ## Список использованных технологий
 - Java 17
 - Spring boot
   - Data JPA
   - MVC
   - Security
+- Liquibase
+- Hibernate validator
 - Docker compose
+- Keycloak
 - GitHub Actions
+- PostgreSQL
